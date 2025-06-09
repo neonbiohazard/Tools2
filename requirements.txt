@@ -1,2 +1,6 @@
 transformers>=4.38.0
 torch
+flake8
+black
+autoflake
+matplotlib

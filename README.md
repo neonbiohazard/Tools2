@@ -19,4 +19,6 @@ python -m src.agent
 ```
 
 This will load the models and start an interactive session where the agent can
-execute tools such as listing directories or summarizing files.
+execute dozens of workspace tools. The tool set now covers planning, code
+analysis, refactoring, data inspection, dependency management and more. The
+agent uses a reranker model to choose which tool best matches your request.
