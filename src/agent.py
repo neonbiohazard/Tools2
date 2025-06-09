@@ -3,9 +3,11 @@ from __future__ import annotations
 
 import argparse
 
+import inspect
 import json
 import re
 from pathlib import Path
+
 from .llm import LLM
 from .reranker import Reranker
 from . import tools
@@ -57,8 +59,18 @@ class ToolDispatcher:
             tools.log_tool_usage("none", "no action")
             return None, None
         kwargs = self._parse_args(best, query)
+        func, _ = tools.TOOL_REGISTRY[best]
+        sig = inspect.signature(func)
+        required = [
+            p.name
+            for p in sig.parameters.values()
+            if p.default is inspect._empty and p.kind == p.POSITIONAL_OR_KEYWORD
+        ]
+        if any(name not in kwargs for name in required):
+            tools.log_tool_usage(best, "missing arguments")
+            return None, None
         try:
-            result = tools.dispatch_tool(best, **kwargs)
+            result = func(**kwargs)
         except Exception as e:
             result = f"Tool {best} failed: {e}"
         tools.log_tool_usage(best, str(result))
@@ -70,6 +82,12 @@ def chat_loop():
     reranker = Reranker()
     dispatcher = ToolDispatcher(reranker)
     history = ChatHistory()
+    if not history.entries:
+        system_msg = (
+            "You are a helpful local assistant with access to workspace tools. "
+            "Call tools when useful and respond with clear answers."
+        )
+        history.add("System", system_msg)
 
     print("Agent ready. Type 'exit' to quit.")
     while True:

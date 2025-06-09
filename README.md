@@ -33,7 +33,8 @@ model. The tool set covers planning, code analysis, refactoring, data
 inspection, dependency management and more. Tool functions self-register via a
 ``@register_tool`` decorator, making it easy to extend the system. Conversation
 history is stored in ``history.json`` so the LLM can reference earlier
-exchanges.
+exchanges. The first run seeds a short "System" message describing the
+available tools so the model has context.
 
 ### Folder summaries
 
@@ -52,3 +53,7 @@ User> How many rows are in data.csv?
 [Tool] Rows: 100, Columns: 5
 Assistant: The CSV has 100 rows and five columns.
 ```
+
+The dispatcher only executes a tool if the required arguments can be extracted
+from your request. If they are missing, the conversation continues normally
+without invoking a tool.
