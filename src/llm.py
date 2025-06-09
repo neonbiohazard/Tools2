@@ -20,8 +20,8 @@ class LLM:
         path = self.model_path or str(BASE_MODEL_PATH)
         self.tokenizer = AutoTokenizer.from_pretrained(path)
         self.model = AutoModelForCausalLM.from_pretrained(
-            path, torch_dtype=torch.float16, device_map=DEVICE
-        )
+            path, torch_dtype=torch.float16, device_map="auto"
+        ).to(DEVICE)
 
     def __call__(self, prompt: str, max_tokens: int = 256) -> str:
         inputs = self.tokenizer(prompt, return_tensors="pt").to(DEVICE)

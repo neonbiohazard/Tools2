@@ -20,8 +20,8 @@ class Reranker:
         path = self.model_path or str(RERANKER_MODEL_PATH)
         self.tokenizer = AutoTokenizer.from_pretrained(path)
         self.model = AutoModelForCausalLM.from_pretrained(
-            path, torch_dtype=torch.float16, device_map=DEVICE
-        )
+            path, torch_dtype=torch.float16, device_map="auto"
+        ).to(DEVICE)
 
     def rank(self, query: str, options: Iterable[str]) -> List[float]:
         scores = []

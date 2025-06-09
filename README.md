@@ -10,7 +10,8 @@ The agent loads two models from local paths by default:
 - **Qwen3-Reranker-0.6B** – reranker used to select tools.
 
 All configuration is done in `src/config.py`. Modify the model paths there to
-match your environment.
+match your environment. Models are loaded with CUDA acceleration (tested on a
+3090) by default; change the `DEVICE` setting if you need CPU execution.
 
 Run the example chat loop:
 
