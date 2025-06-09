@@ -1,0 +1,22 @@
+import sys
+import types
+from pathlib import Path
+
+# Stub heavy modules before importing project code
+sys.modules.setdefault("torch", types.ModuleType("torch"))
+matplotlib_stub = types.ModuleType("matplotlib")
+matplotlib_stub.pyplot = types.ModuleType("pyplot")
+sys.modules.setdefault("matplotlib", matplotlib_stub)
+sys.modules.setdefault("matplotlib.pyplot", matplotlib_stub.pyplot)
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT))
+
+from src import tools
+
+def test_read_write(tmp_path):
+    file = tmp_path / "a.txt"
+    tools.write_file(file, "hello")
+    assert tools.read_file(file) == "hello"
+    tools.append_file(file, " world")
+    assert "world" in tools.read_file(file)

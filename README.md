@@ -22,3 +22,6 @@ This will load the models and start an interactive session where the agent can
 execute dozens of workspace tools. The tool set now covers planning, code
 analysis, refactoring, data inspection, dependency management and more. The
 agent uses a reranker model to choose which tool best matches your request.
+Tool functions self-register via a ``@register_tool`` decorator, making it easy
+to extend the system. Conversation history is stored in ``history.json`` so the
+LLM can reference earlier exchanges.
