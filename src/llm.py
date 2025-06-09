@@ -28,4 +28,7 @@ class LLM:
                 "top_p": 0.95,
             },
         )
-        return resp.text
+        # ``ollama`` returns a dictionary with the generated text under the
+        # ``response`` key. Older versions exposed ``.text`` on the response
+        # object; using the dict form keeps compatibility.
+        return resp.get("response", "")

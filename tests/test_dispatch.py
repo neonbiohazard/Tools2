@@ -15,7 +15,7 @@ sys.modules.setdefault("matplotlib.pyplot", mat_stub.pyplot)
 ollama_stub = types.ModuleType("ollama")
 class DummyOllamaClient:
     def generate(self, *args, **kwargs):
-        return types.SimpleNamespace(text="stub")
+        return {"response": "stub"}
 ollama_stub.Client = DummyOllamaClient
 ollama_stub.OllamaClient = DummyOllamaClient
 sys.modules.setdefault("ollama", ollama_stub)
