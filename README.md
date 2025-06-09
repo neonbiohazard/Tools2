@@ -19,13 +19,15 @@ Run the example chat loop:
 python -m src.agent
 ```
 
-This will load the models and start an interactive session where the agent can
-execute dozens of workspace tools. The tool set now covers planning, code
-analysis, refactoring, data inspection, dependency management and more. The
-agent uses a reranker model to choose which tool best matches your request.
-Tool functions self-register via a ``@register_tool`` decorator, making it easy
-to extend the system. Conversation history is stored in ``history.json`` so the
-LLM can reference earlier exchanges.
+This will load the models and start an interactive session. You can converse as
+with any chatbot. For each user message the agent consults a reranker to decide
+whether a tool should be run. If a suitable tool is found it executes it and
+shows the result before replying. Otherwise it simply answers with the language
+model. The tool set covers planning, code analysis, refactoring, data
+inspection, dependency management and more. Tool functions self-register via a
+``@register_tool`` decorator, making it easy to extend the system. Conversation
+history is stored in ``history.json`` so the LLM can reference earlier
+exchanges.
 
 ### Folder summaries
 
@@ -33,3 +35,14 @@ The ``summarize_folder`` tool chains ``list_dir`` and ``summarize_file`` to
 provide a quick overview of each file in a directory. Ask the agent something
 like ``"Can you summarize the folder at ./src?"`` and it will inspect and
 summarize a few files for you.
+
+### Natural interaction
+
+Because the dispatcher always runs, you can simply ask the assistant anything.
+For example:
+
+```
+User> How many rows are in data.csv?
+[Tool] Rows: 100, Columns: 5
+Assistant: The CSV has 100 rows and five columns.
+```

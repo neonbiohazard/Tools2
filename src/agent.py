@@ -49,10 +49,13 @@ class ToolDispatcher:
         return kwargs
 
     def dispatch(self, query: str):
-        options = list(tools.available_tools().keys())
-        descriptions = list(tools.available_tools().values())
+        options = list(tools.available_tools().keys()) + ["none"]
+        descriptions = list(tools.available_tools().values()) + ["No tool"]
         scores = self.reranker.rank(query, descriptions)
         best = options[scores.index(max(scores))]
+        if best == "none":
+            tools.log_tool_usage("none", "no action")
+            return None, None
         kwargs = self._parse_args(best, query)
         try:
             result = tools.dispatch_tool(best, **kwargs)
@@ -75,12 +78,10 @@ def chat_loop():
             break
 
         history.add("User", user)
-        result = ""
-        if "folder" in user or "file" in user:
-            res, tool = dispatcher.dispatch(user)
+        res, tool = dispatcher.dispatch(user)
+        if res is not None:
             print("[Tool]", res)
             history.add("Tool", f"{tool}: {res}")
-            result = res
         prompt = history.context() + "\nAssistant:"
         response = llm(prompt)
         history.add("Assistant", response)
