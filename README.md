@@ -4,13 +4,14 @@ This repository provides a starting point for building a local agentic system th
 can interact with your workspace files, plan actions, and use large language
 models for text generation and tool selection.
 
-The agent loads two models from local paths by default:
+The agent uses two models by default:
 
-- **DeepSeek-R1-0528-Qwen3-8B** – base generation model.
+- **qwen3:8b** via Ollama – generation model.
 - **Qwen3-Reranker-0.6B** – reranker used to select tools.
 
-All configuration is done in `src/config.py`. Modify the model paths there to
-match your environment. Models are loaded with CUDA acceleration (tested on a
+All configuration is done in `src/config.py`. Modify the reranker path or
+Ollama model name there to match your environment. Models are loaded with CUDA
+acceleration (tested on a
 3090) by default; change the `DEVICE` setting if you need CPU execution.
 
 If you see import errors mentioning `sklearn` or `scipy`, set the environment

@@ -6,3 +6,4 @@ autoflake
 matplotlib
 numpy<2
 pytest
+ollama

@@ -12,6 +12,13 @@ mat_stub = types.ModuleType("matplotlib")
 mat_stub.pyplot = types.ModuleType("pyplot")
 sys.modules.setdefault("matplotlib", mat_stub)
 sys.modules.setdefault("matplotlib.pyplot", mat_stub.pyplot)
+ollama_stub = types.ModuleType("ollama")
+class DummyOllamaClient:
+    def generate(self, *args, **kwargs):
+        return types.SimpleNamespace(text="stub")
+ollama_stub.Client = DummyOllamaClient
+ollama_stub.OllamaClient = DummyOllamaClient
+sys.modules.setdefault("ollama", ollama_stub)
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT))
