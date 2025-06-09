@@ -58,3 +58,12 @@ def test_dispatch_none():
     assert result is None and name is None
 
 
+def test_windows_path_parsing():
+    tools.TOOL_REGISTRY.clear()
+    tools.register_tool("dummy_tool", "Dummy tool")(_dummy)
+    dispatcher = ToolDispatcher(DummyReranker())
+    query = "summarize F:\\AI\\project"
+    args = dispatcher._parse_args("dummy_tool", query)
+    assert args["path"] == "F:\\AI\\project"
+
+

@@ -39,7 +39,10 @@ class ToolDispatcher:
     def __init__(self, reranker: Reranker):
         self.reranker = reranker
 
-    PATH_RE = re.compile(r"([A-Za-z]:\\\\[\w\\\\.-]+|\.\/?[\w./-]+|/[\w./-]+)")
+    # Match Windows (C:\path or C:/path) and POSIX (/path or ./path) style paths
+    PATH_RE = re.compile(
+        r"([A-Za-z]:[\\/][^\s]+|\.\/?[^\s]+|/[\w./-]+)"
+    )
 
     def _parse_args(self, tool: str, query: str) -> dict:
         match = self.PATH_RE.search(query)
