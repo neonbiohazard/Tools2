@@ -19,10 +19,13 @@ class LLM:
 
     def __call__(self, prompt: str, max_tokens: int = 256) -> str:
         resp = self.client.generate(
-            self.model_name,
+            model=self.model_name,
             prompt=prompt,
-            max_tokens=max_tokens,
-            temperature=0.7,
-            top_p=0.95,
+            stream=False,
+            options={
+                "num_predict": max_tokens,
+                "temperature": 0.7,
+                "top_p": 0.95,
+            },
         )
         return resp.text
