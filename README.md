@@ -13,14 +13,16 @@ All configuration is done in `src/config.py`. Modify the model paths there to
 match your environment. Models are loaded with CUDA acceleration (tested on a
 3090) by default; change the `DEVICE` setting if you need CPU execution.
 
-Run the example chat loop:
+Run the agent via ``localai.py``:
 
 ```bash
-python -m src.agent
+python localai.py
 ```
 
-This will load the models and start an interactive session. You can converse as
-with any chatbot. For each user message the agent consults a reranker to decide
+This will load the models and start an interactive session. ``localai.py`` is a
+small wrapper that imports ``src.agent`` and bootstraps both the generation
+model and reranker on your GPU. You can converse as with any chatbot. For each
+user message the agent consults a reranker to decide
 whether a tool should be run. If a suitable tool is found it executes it and
 shows the result before replying. Otherwise it simply answers with the language
 model. The tool set covers planning, code analysis, refactoring, data
