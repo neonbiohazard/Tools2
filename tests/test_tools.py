@@ -20,3 +20,12 @@ def test_read_write(tmp_path):
     assert tools.read_file(file) == "hello"
     tools.append_file(file, " world")
     assert "world" in tools.read_file(file)
+
+
+def test_summarize_folder(tmp_path):
+    f1 = tmp_path / "one.txt"
+    f2 = tmp_path / "two.txt"
+    tools.write_file(f1, "alpha")
+    tools.write_file(f2, "beta")
+    summary = tools.summarize_folder(tmp_path, max_files=2)
+    assert "alpha" in summary and "beta" in summary

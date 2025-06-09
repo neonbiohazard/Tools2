@@ -92,6 +92,19 @@ def generate_readme(path: str | Path) -> None:
     write_file(Path(path) / "README.generated.md", content)
 
 
+@register_tool("summarize_folder", "Summarize the contents of a folder")
+def summarize_folder(path: str | Path, max_files: int = 5) -> str:
+    """List files and return short summaries for a subset."""
+    entries = list_dir(path)
+    summaries = []
+    for fp in entries[:max_files]:
+        p = Path(fp)
+        if p.is_file():
+            summ = summarize_file(p, max_lines=10)
+            summaries.append(f"{p}::\n{summ}")
+    return "\n\n".join(summaries)
+
+
 # ---------------------------------------------------------------------------
 # Reasoning & Planning Tools
 # ---------------------------------------------------------------------------
