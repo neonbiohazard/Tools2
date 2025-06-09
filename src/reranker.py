@@ -1,8 +1,13 @@
 """Tool selection reranker using a language model."""
 from __future__ import annotations
 
+import os
+
 from dataclasses import dataclass
 from typing import Iterable, List
+
+# Avoid importing optional candidate generator that requires heavy dependencies
+os.environ.setdefault("DISABLE_TRANSFORMERS_CANDIDATE_GENERATOR", "1")
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer

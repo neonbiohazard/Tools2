@@ -13,6 +13,10 @@ All configuration is done in `src/config.py`. Modify the model paths there to
 match your environment. Models are loaded with CUDA acceleration (tested on a
 3090) by default; change the `DEVICE` setting if you need CPU execution.
 
+If you see import errors mentioning `sklearn` or `scipy`, set the environment
+variable `DISABLE_TRANSFORMERS_CANDIDATE_GENERATOR=1` before running the agent
+to skip optional components that depend on those packages.
+
 Run the agent via ``localai.py``:
 
 ```bash
