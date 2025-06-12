@@ -1,0 +1,4 @@
+__pycache__/
+history.json
+tool_usage_log.json
+project_memory.json
